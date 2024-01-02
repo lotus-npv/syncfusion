@@ -41,12 +41,18 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text('Calendar'),
       ),
       body: SfCalendar(
-        view: CalendarView.day,
+        view: CalendarView.week,
         dataSource: MeetingDataSource(_getDataSource()),
+        firstDayOfWeek: 1,
+        showDatePickerButton: true,
+        showTodayButton: true,
+        allowDragAndDrop: true,
         // by default the month appointment display mode set as Indicator, we can
         // change the display mode as appointment using the appointment display
         // mode property
-        monthViewSettings: const MonthViewSettings(appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
+        monthViewSettings: const MonthViewSettings(appointmentDisplayMode: MonthAppointmentDisplayMode.appointment, showAgenda: true),
+        allowViewNavigation: true,
+        allowedViews: const [CalendarView.day, CalendarView.week, CalendarView.month, CalendarView.schedule],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -73,9 +79,13 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Meeting> _getDataSource() {
     final List<Meeting> meetings = <Meeting>[];
     final DateTime today = DateTime.now();
-    final DateTime startTime = DateTime(today.year, today.month, today.day, 9);
+    final DateTime startTime = DateTime(today.year, today.month, today.day, 7);
     final DateTime endTime = startTime.add(const Duration(hours: 4));
-    meetings.add(Meeting('Conference', startTime, endTime, const Color(0xFF0F8644), false));
+    meetings.add(Meeting('Đón ông Obama ở sân bay Nội Bài', startTime, endTime, const Color(0xFF0F8644), false));
+    meetings.add(Meeting('Di an tai nha hang', DateTime(today.year, today.month, today.day, 10).add(const Duration(days: 1)),
+        DateTime(today.year, today.month, today.day, 10).add(const Duration(days: 1, hours: 2)), const Color(0xFF0F8644), false));
+    meetings.add(Meeting('Họp ban giám đốc', DateTime(today.year, today.month, today.day, 15).add(const Duration(days: 1)),
+        DateTime(today.year, today.month, today.day, 15).add(const Duration(days: 1, hours: 5)), const Color(0xFF0F8644), false));
     return meetings;
   }
 }
